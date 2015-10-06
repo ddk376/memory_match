@@ -14,3 +14,8 @@ instance variable to contain all the cards
 * ``` #render ``` should print out a representation of the Board's current state
 * ``` #won? ``` should return true if all cards have been revealed.
 * ``` #reveal ``` should reveal a Card at guessed_pos (unless it's already face-up, in which case the method should do nothing). It should also return the value of the card it revealed (you'll see why later).
+
+
+# Game
+The Game has an instance variable for the Board and previously-guessed position.
+It also has methods for managing the Board-Player interaction.
