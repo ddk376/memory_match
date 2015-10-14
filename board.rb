@@ -1,11 +1,12 @@
 require_relative 'card'
 class Board
-  attr_reader :size
+  attr_reader :size, :match_num
 
-  def initialize(size = 4)
+  def initialize(size = 4, match_num = 2)
     size = 99 if size > 99
     @grid = Array.new(size) {Array.new(size)}
     @size = size
+    @match_num = match_num
     populate
   end
 
@@ -14,39 +15,37 @@ class Board
     @grid[row][col]
   end
 
+  def []=(pos, value)
+    row, col = pos
+    @grid[row][col] = value
+  end
+
   def populate
-    num_of_pairs = (size ** 2) / 2
-    all_cards = Card.create_deck(num_of_pairs)
-
-    shuffled_cards = all_cards.shuffle
-
-    shuffled_cards.each do |shuffled_card|
-      size.times do |i|
-        size.times do |j|
-          @grid[i][j] = shuffled_cards.pop
-        end
-      end
+    num_of_matches = (size ** 2) / match_num
+    all_cards = Card.create_deck(num_of_matches, match_num)
+    all_cards.length.times do |idx|
+      @grid[idx / size][idx % size] = all_cards.pop
     end
+
+    self
   end
 
   def render
     print "   "
-    size.times do |coord|
-      print "%3s" % coord
-    end
+    size.times { |coord| print "%3s" % coord }
     puts
-    (0..(size - 1)).each do |i|
+    size.times.each do |i|
       print "%3s" % i.to_s
-      (0..(size - 1)).each { |j| print "%3s" % "#{@grid[i][j].to_s}" }
+      size.times.each { |j| print "%3s" % "#{@grid[i][j].to_s}" }
       puts
     end
   end
 
   def won?
-    @grid.flatten.all? { |card| card.revealed? }
+    @grid.flatten.compact.all? { |card| card.revealed? }
   end
 
-  def reveal(guessed_pos)  #guessed_pos = [i,j]
+  def reveal(guessed_pos)
     @grid[guessed_pos].reveal
   end
 

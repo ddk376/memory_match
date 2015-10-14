@@ -1,12 +1,10 @@
 class Card
-
-  def self.create_deck(num_of_pairs)
+  def self.create_deck(num_of_matches, match_num)
     cards = []
-    num_of_pairs.times do
-      cards += (1..num_of_pairs).to_a
+    match_num.times do
+      cards += (1..num_of_matches).to_a
     end
-    cards.shuffle!
-    cards.map { |value| self.new(value) }
+    cards.shuffle.map { |value| self.new(value) }
   end
 
   attr_reader :value
