@@ -1,28 +1,8 @@
 # Memory match
 Simple command-line version of classic Match 2 memory card game
 
-# Card
-A card has a value and a boolean state, revealed.
-Implemented class methods include
-``` #hide ```, ``` #reveal ```, ``` #revealed? ```, ``` #to_s ```, ``` #== ```
-
-# Board
-The Board is responsible for keeping track of all the cards. There is a grid
-instance variable to contain all the cards
-
-* ``` #populate ``` should fill the board with a set of shuffled Card pairs
-* ``` #render ``` should print out a representation of the Board's current state
-* ``` #won? ``` should return true if all cards have been revealed.
-* ``` #reveal ``` should reveal a Card at guessed_pos (unless it's already face-up, in which case the method should do nothing). It should also return the value of the card it revealed (you'll see why later).
-
-
-# Game
-The Game has an instance variable for the Board and previously-guessed position.
-It also has methods for managing the Board-Player interaction.
-``` play ``` runs until the game is over. Inside the loop, it ``` render ```
-the board, ``` prompt ``` the player for input, and get a ``` guessed_pos ```
-and passes it to ``` make_guess ```
-
+# How to player
+``` ruby memory.rb ```
 
 # TODO
 -[ ]- Implement a simple command-line interface, allowing the user to determine the difficulty of the game (i.e., the size of the board). Do this before the Game is ``` initialize ``` d. Remember ``` if __FILE__ == $PROGRAM_NAME! ```
