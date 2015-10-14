@@ -53,8 +53,3 @@ class Board
     @grid[guessed_pos].hide
   end
 end
-
-if __FILE__ == $PROGRAM_NAME
-  board = Board.new(22)
-  board.render
-end

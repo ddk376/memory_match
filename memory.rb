@@ -1,16 +1,20 @@
 require_relative 'board'
+require_relative 'human_player'
 require 'byebug'
 
 class Game
   attr_accessor :players, :board
   attr_reader :match_num
 
-  def initialize(size_of_board = 4, match_num = 2)
-    @board = Board.new(size_of_board, match_num).populate
-    @match_num = match_num
+  def initialize(*args)
+    args.map! { |arg| arg.to_i }
+    size_of_board = args.shift || 4
+    @match_num = args.shift  || 2
+    p args
+    @board = Board.new(size_of_board, @match_num).populate
     @guessed_pos = []
-    @players = [HumanPlayer.new(match_num, size_of_board),
-                HumanPlayer.new(match_num, size_of_board)]
+    @players = [HumanPlayer.new(@match_num, size_of_board),
+                HumanPlayer.new(@match_num, size_of_board)]
     play
   end
 
@@ -59,64 +63,7 @@ class Game
   attr_reader :board
 end
 
-
-class HumanPlayer
-  attr_reader :num_of_matches, :board_size
-  def initialize(num_of_matches, board_size)
-    @num_of_matches = num_of_matches
-    @board_size = board_size
-  end
-
-  def prompt
-    puts "Guess a row and a column integer value (separated by commas)"
-    get_input
-  end
-
-  def get_input
-    input = gets.chomp
-    if input =~ /^\d+,\d+$/
-      i, j = input.split(",").map{ |el| el.to_i }
-      return [i,j] if [i,j].all?{ |el| el <= board_size }
-    end
-    invalid_input
-  end
-
-  private
-  def invalid_input
-    puts "Invalid input"
-    self.prompt
-  end
-end
-
-class ComputerPlayer
-  attr_reader :validation_check, :num_of_matches
-  def intialize(num, matchcard=2)
-      @num_of_matches=matchcard
-  end
-
-  def prompt
-    get_input
-  end
-
-  def recieve_match(pos1, pos2)
-    if @known_cards[pos1] == @known_cards[pos2]
-      @matched_cards << [pos1, pos2]
-    end
-  end
-
-  def get_input
-    if @matched_card.length > 0
-        #return known matches
-    elsif #no known matches, but known_cards.length > 1
-      #return a known card & a random card
-      puts
-    else
-    i = rand(@validation_check) + 1
-    j = rand(@validation_check) + 1
-    end
-  end
-end
-
 if __FILE__ == $PROGRAM_NAME
-  game = Game.new
+  p *ARGV
+  game = Game.new *ARGV
 end
